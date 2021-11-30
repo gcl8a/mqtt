@@ -9,6 +9,7 @@ const char* password = "<your network password>";
 for example,
 
 // WPI Open
+
 const char* ssid = "WPI-Open";
 const char* password = "";
 
