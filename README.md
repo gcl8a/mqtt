@@ -8,13 +8,13 @@ const char* password = "<your network password>";
 
 for example,
 
-//WPI Open
-//  const char* ssid = "WPI-Open";
-//  const char* password = "";
+// WPI Open
+const char* ssid = "WPI-Open";
+const char* password = "";
 
 //RBE
-//  const char* ssid = "RBE";
-//  const char* password = "";
+const char* ssid = "RBE";
+const char* password = "";
 
 And mqtt credentials:
 
@@ -27,7 +27,7 @@ const char* mqtt_server = "<mqtt-server-name>";
 for example
 
 // robomqtt credientials
-// const char* mqtt_server = "robomqtt.cs.wpi.edu";
-// #define mqtt_port 1883
-// #define MQTT_USER "<teamNN>"
-// #define MQTT_PASSWORD "<password provided>"
+const char* mqtt_server = "robomqtt.cs.wpi.edu";
+#define mqtt_port 1883
+#define MQTT_USER "<teamNN>"
+#define MQTT_PASSWORD "<password provided>"
