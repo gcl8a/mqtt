@@ -1,45 +1,23 @@
 # mqtt
- wrapper for PubSubClient
 
-You'll need to make wifi_credentials.h, that contains:
+An Arduino wrapper for [PubSubClient](https://pubsubclient.knolleary.net) that manages connectivity. The wrapper functions make use of non-blocking connection checking. 
 
-const char* ssid = "<your ssid>";
-const char* password = "<your network password>";
+To use the library, you will need to create a file, `wifi_credentials.h`, that declares:
 
-for example,
+* WiFi credentials:
 
-// WPI Open
- 
- const char* ssid = "WPI-Open";
- 
- const char* password = "";
+    ```
+    const char* ssid = "<your ssid>";
+    const char* password = "<your network password>";
+    ```
 
-//RBE
+* MQTT credentials:
 
- const char* ssid = "RBE";
+    ```
+    const char* mqtt_server = "<mqtt-server-name>";
+    #define mqtt_port <mqtt port>
+    #define MQTT_USER "<username>"
+    #define MQTT_PASSWORD "<password>"
+    ```
 
- const char* password = "";
-
-And mqtt credentials:
-
-// cloudmqtt credentials
-
- const char* mqtt_server = "<mqtt-server-name>";
-
- #define mqtt_port <mqtt port>
-
- #define MQTT_USER "<username>"
-
- #define MQTT_PASSWORD "<password>"
-
-for example
-
-// robomqtt credientials
-
- const char* mqtt_server = "robomqtt.cs.wpi.edu";
-
- #define mqtt_port 1883
-
- #define MQTT_USER "<teamNN>"
-
- #define MQTT_PASSWORD "<password provided>"
+The `wifi_credentials.h` file can live wherever you want, so long as it can be found by the compiler. If you put it in the `src` folder of your project, be sure to add it to your `.gitignore` file. Better is to put it in a local directory on your machine and point to it using `lib_extra_dirs`.

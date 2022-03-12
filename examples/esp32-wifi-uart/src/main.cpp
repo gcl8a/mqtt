@@ -2,16 +2,19 @@
 #include <PubSubClient.h>
 #include <mqtt.h>
 
-const String teamName("team00/");
+const int teamNumber = 0;
 
 void setup() 
 {
     delay(1000);
 
     Serial.begin(115200);
-    Serial.println(F("Starting"));
+    Serial.println("setup()");
+
+    Serial2.begin(115200);
 
     setup_mqtt();
+    Serial.println("/setup()");
 }
 
 String rxString;
@@ -54,8 +57,7 @@ bool publishMQTT(String& str)
 
     reconnect(); // checks if connected and attempts to reconnect
 
-    String topic = str.substring(0, iCol);
-    topic = teamName + topic;
+    String topic = String("team") + String (teamNumber) + String('/') + str.substring(0, iCol);
     String message = str.substring(iCol + 1);
 
     bool success = client.publish(topic.c_str(), message.c_str());

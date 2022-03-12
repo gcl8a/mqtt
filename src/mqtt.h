@@ -13,7 +13,7 @@
 void setup_wifi();
 bool wifi_reconnect(void);
 bool reconnect();
-void callback(char* topic, byte *payload, unsigned int length);
+//void callback(char* topic, byte *payload, unsigned int length);
 void setup_mqtt();
 
 extern WiFiClient wifiClient;

@@ -1,17 +1,11 @@
-## MQTT example
+# MQTT example
 
-A basic MQTT example with non-blocking connection checking.
+A basic MQTT example for the ESP32 that uses non-blocking connection checking. The program will listen for strings of the form, `topic:message` on *both* `Serial` (for testing) and `Serial2` (for using the ESP32 as a WiFi board) and publish them to the MQTT broker of your choice. 
 
-You will need to create a file, wifi_credentials.h, that declares both:
+See the `readme.md` in the root directory for setting up credentials. You will need to set the team number at the top of `main.cpp`:
 
-the wifi credentials:
+```
+const int teamNumber <your_team_number>
+```
 
-const char* ssid = "<your ssid>";
-const char* password = "<your network password>";
-
-and mqtt credentials:
-
- const char* mqtt_server = "<mqtt-server-name>";
- #define mqtt_port <mqtt port>
- #define MQTT_USER "<username>"
- #define MQTT_PASSWORD "<password>"
+The code also declares a simple *callback* function and subscribes to topics corresponding to your team number. Messages are printed by default to both `Serial` and `Serial2` in the same `topic:message` format (with the team name stripped).
