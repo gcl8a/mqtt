@@ -21,7 +21,7 @@ void loop()
 {
     static uint32_t lastSend = 0;
     uint32_t currTime = millis();
-    if(currTime - lastSend > 5000) //send every five seconds
+    if(currTime - lastSend >= 5000) //send every five seconds
     {
         lastSend = currTime;
         sendMessage("time", String(currTime));
