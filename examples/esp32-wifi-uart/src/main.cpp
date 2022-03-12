@@ -55,6 +55,7 @@ bool publishMQTT(String& str)
 
 void callback(char* topic, byte *payload, unsigned int length) 
 {
+    // These two lines can be commented out; they are used for testing and don't affect functionality
     Serial.print("Full topic: ");
     Serial.println(topic);
 
