@@ -80,9 +80,9 @@ void setup()
 
     Serial2.begin(115200);
 
-    client.setCallback(callback);
-
     setup_mqtt();
+
+    client.setCallback(callback);
 
     // Subscribes to *all* topics for your team by default (including messages you send!)
     String topics = String("team") + String(teamNumber) + String("/#");
@@ -94,6 +94,7 @@ void setup()
 void loop() 
 {
     client.loop();
+    
     if(checkSerial()) publishMQTT(rxString);
     if(checkSerial2()) publishMQTT(rx2String);
 }

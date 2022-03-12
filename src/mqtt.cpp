@@ -105,7 +105,6 @@ void setup_mqtt()
 
     setup_wifi();
     client.setServer(mqtt_server, mqtt_port);
-    // client.setCallback(callback);
     client.setKeepAlive(KEEP_ALIVE_INTERVAL);
     reconnect();
 
