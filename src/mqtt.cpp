@@ -91,13 +91,13 @@ bool reconnect()
   return true;
 }
 
-void callback(char* topic, byte *payload, unsigned int length) 
-{
-    Serial.println(topic);
-    Serial.print(':');  
-    Serial.write(payload, length);
-    Serial.println();
-}
+// void callback(char* topic, byte *payload, unsigned int length) 
+// {
+//     Serial.println(topic);
+//     Serial.print(':');  
+//     Serial.write(payload, length);
+//     Serial.println();
+// }
 
 void setup_mqtt() 
 {

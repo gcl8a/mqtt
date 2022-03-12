@@ -4,19 +4,6 @@
 
 const int teamNumber = 0;
 
-void setup() 
-{
-    delay(1000);
-
-    Serial.begin(115200);
-    Serial.println("setup()");
-
-    Serial2.begin(115200);
-
-    setup_mqtt();
-    Serial.println("/setup()");
-}
-
 String rxString;
 bool checkSerial(void)
 {
@@ -64,6 +51,38 @@ bool publishMQTT(String& str)
     str = "";
 
     return success;
+}
+
+void callback(char* topic, byte *payload, unsigned int length) 
+{
+    Serial.println(topic);
+    Serial.print(':');  
+    Serial.write(payload, length);
+    Serial.println();
+
+    Serial2.println(topic);
+    Serial2.print(':');  
+    Serial2.write(payload, length);
+    Serial2.println();
+}
+
+void setup() 
+{
+    Serial.begin(115200);
+    delay(500);  //give it a moment to bring up the Serial
+
+    Serial.println("setup()");
+
+    Serial2.begin(115200);
+
+    setup_mqtt();
+
+    client.setCallback(callback);
+
+    String topics = String("team") + String(teamNumber);
+    client.subscribe(topics.c_str());
+
+    Serial.println("/setup()");
 }
 
 void loop() 
