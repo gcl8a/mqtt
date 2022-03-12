@@ -11,7 +11,7 @@
 #include <PubSubClient.h>
 
 void setup_wifi();
-void wifi_reconnect(void);
+bool wifi_reconnect(void);
 bool reconnect();
 void callback(char* topic, byte *payload, unsigned int length);
 void setup_mqtt();

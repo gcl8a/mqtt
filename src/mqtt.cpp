@@ -28,7 +28,7 @@ void setup_wifi() {
 uint32_t lastWiFiCxnAttempt = 0;
 uint32_t wifiCxnRetryInterval = 10000;
 
-void wifi_reconnect(void)
+bool wifi_reconnect(void)
 {
   if(WiFi.status() != WL_CONNECTED)
   {
@@ -38,8 +38,14 @@ void wifi_reconnect(void)
       WiFi.begin(ssid, password);
       
       randomSeed(micros());
+
+      if(WiFi.status() == WL_CONNECTED) return true;
     }
+
+    return false;
   }
+
+  return true;
 }
 
 uint32_t lastCxnAttempt = 0;
