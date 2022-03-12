@@ -2,6 +2,8 @@
 #include <PubSubClient.h>
 #include <mqtt.h>
 
+const String teamName("team00/");
+
 void setup() 
 {
     delay(1000);
@@ -38,30 +40,32 @@ bool checkSerial2(void)
     return false;
 }
 
+bool publishMQTT(String& str)
+{
+    Serial.println(str);
+
+    int iCol = str.indexOf(':');
+    if(iCol == -1) 
+    {
+        Serial.println("Failed to find delimiter");
+        str = "";
+        return false;
+    }
+
+    reconnect(); // checks if connected and attempts to reconnect
+
+    String topic = str.substring(0, iCol);
+    topic = teamName + topic;
+    String message = str.substring(iCol + 1);
+
+    bool success = client.publish(topic.c_str(), message.c_str());
+    str = "";
+
+    return success;
+}
+
 void loop() 
 {
-    if(checkSerial())
-    {   
-        if(!client.connected()) 
-        {
-            reconnect();
-        }
-
-        client.publish("teamlewin/s0", rxString.c_str());
-
-        Serial.println(rxString);
-        rxString = "";
-    }
-    if(checkSerial2())
-    {   
-        if(!client.connected()) 
-        {
-            reconnect();
-        }
-
-        client.publish("teamlewin/s2", rx2String.c_str());
-
-        Serial.println(rx2String);
-        rx2String = "";
-    }
+    if(checkSerial()) publishMQTT(rxString);
+    if(checkSerial2()) publishMQTT(rx2String);
 }

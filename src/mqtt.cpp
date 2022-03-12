@@ -45,12 +45,12 @@ void wifi_reconnect(void)
 uint32_t lastCxnAttempt = 0;
 uint32_t cxnRetryInterval = 1500;
 
-void reconnect() 
+bool reconnect() 
 {
   wifi_reconnect();
 
   //try to reconnect once
-  while(!client.connected()) 
+  if(!client.connected()) 
   {
     if(millis() - lastCxnAttempt > cxnRetryInterval)
     {
@@ -63,9 +63,10 @@ void reconnect()
       clientId += String(random(0xffff), HEX);
       
       // Attempt to connect
-      if (client.connect(clientId.c_str(), MQTT_USER, MQTT_PASSWORD)) 
+      if(client.connect(clientId.c_str(), MQTT_USER, MQTT_PASSWORD)) 
       {
         Serial.println("connected");
+        return true;
       } 
 
       else 
@@ -73,9 +74,15 @@ void reconnect()
         Serial.print("failed, rc = ");
         Serial.print(client.state());
         Serial.println("; will try again");
+
+        return false;
       }
     }
+
+    return false;
   }
+
+  return true;
 }
 
 void callback(char* topic, byte *payload, unsigned int length) 
@@ -92,7 +99,7 @@ void setup_mqtt()
 
     setup_wifi();
     client.setServer(mqtt_server, mqtt_port);
-    //client.setCallback(callback);
+    client.setCallback(callback);
     client.setKeepAlive(KEEP_ALIVE_INTERVAL);
     reconnect();
 
