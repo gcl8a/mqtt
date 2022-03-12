@@ -1,3 +1,0 @@
-## Test
-
-$$ \frac{dy}{dx} $$
