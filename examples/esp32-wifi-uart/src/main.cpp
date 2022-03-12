@@ -55,12 +55,17 @@ bool publishMQTT(String& str)
 
 void callback(char* topic, byte *payload, unsigned int length) 
 {
+    Serial.print("Full topic: ");
     Serial.println(topic);
+
+    String strTopic(topic);
+
+    Serial.print(strTopic.substring(strTopic.indexOf('/') + 1));
     Serial.print(':');  
     Serial.write(payload, length);
     Serial.println();
 
-    Serial2.println(topic);
+    Serial2.print(strTopic.substring(strTopic.indexOf('/') + 1));
     Serial2.print(':');  
     Serial2.write(payload, length);
     Serial2.println();
@@ -75,11 +80,12 @@ void setup()
 
     Serial2.begin(115200);
 
-    setup_mqtt();
-
     client.setCallback(callback);
 
-    String topics = String("team") + String(teamNumber);
+    setup_mqtt();
+
+    // Subscribes to *all* topics for your team by default (including messages you send!)
+    String topics = String("team") + String(teamNumber) + String("/#");
     client.subscribe(topics.c_str());
 
     Serial.println("/setup()");
@@ -87,6 +93,7 @@ void setup()
 
 void loop() 
 {
+    client.loop();
     if(checkSerial()) publishMQTT(rxString);
     if(checkSerial2()) publishMQTT(rx2String);
 }
