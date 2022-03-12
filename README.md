@@ -20,4 +20,4 @@ To use the library, you will need to create a file, `wifi_credentials.h`, that d
     #define MQTT_PASSWORD "<password>"
     ```
 
-The `wifi_credentials.h` file can live wherever you want, so long as it can be found by the compiler. If you put it in the `src` folder of your project, be sure to add it to your `.gitignore` file. Better is to put it in a local directory on your machine and point to it using `lib_extra_dirs`. **You will need to edit `platformio.ini` to point to the correct directory.**
+The `wifi_credentials.h` file can live wherever you want, so long as it can be found by the compiler. If you put it in the `src` folder of your project, be sure to add it to your `.gitignore` file. Better is to put it in a local directory on your machine and point to it using `lib_extra_dirs`. **You will need to edit `platformio.ini` in the example(s) to point to the correct directory.**
