@@ -53,7 +53,7 @@ uint32_t cxnRetryInterval = 1500;
 
 bool reconnect() 
 {
-  wifi_reconnect();
+  if(!wifi_reconnect()) return false;
 
   //try to reconnect once
   if(!client.connected()) 
@@ -105,7 +105,7 @@ void setup_mqtt()
 
     setup_wifi();
     client.setServer(mqtt_server, mqtt_port);
-    client.setCallback(callback);
+    // client.setCallback(callback);
     client.setKeepAlive(KEEP_ALIVE_INTERVAL);
     reconnect();
 
