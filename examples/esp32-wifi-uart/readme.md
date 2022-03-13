@@ -1,6 +1,10 @@
 # MQTT example
 
-A basic MQTT example for the ESP32 that uses non-blocking connection checking. The program will listen for strings of the form, `topic:message` on *both* `Serial` (for testing) and `Serial2` (for using the ESP32 as a WiFi board) and publish them to the MQTT broker of your choice. 
+A basic MQTT example for the ESP32 that uses non-blocking connection checking. The program will listen for strings of the form, 
+
+`topic:message` 
+
+on *both* `Serial` (for testing) and `Serial2` (for using the ESP32 as a WiFi board) and publish them to the MQTT broker of your choice. 
 
 See the `readme.md` in the root directory of this repo for how to set up credentials. 
 
