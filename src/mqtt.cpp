@@ -91,6 +91,10 @@ bool reconnect()
   return true;
 }
 
+/** You can use this callback to test connectivity, but it only prints
+ * messages -- you'll have to customize it for your purposes (which is
+ * better done in your application -- see the examples)
+ * */
 // void callback(char* topic, byte *payload, unsigned int length) 
 // {
 //     Serial.println(topic);
