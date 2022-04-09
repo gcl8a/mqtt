@@ -1,6 +1,6 @@
 # MQTT Romi example
 
-This example works with the `ESP32-wifi-uart` example to allow you to connect an ATmega32U4 (e.g., as on a [Pololu Romi](https://www.pololu.com/docs/0J69) or Arduino Leonardo) to an MQTT broker. The ESP32 will manage the MQTT connectivity; this code interacts with the ESP32 through a UART connection.
+This example is paired with the `ESP32-wifi-uart` example to allow you to connect an ATmega32U4 (e.g., as on a [Pololu Romi](https://www.pololu.com/docs/0J69) or Arduino Leonardo) to an MQTT broker. The ESP32 will manage the MQTT connectivity; this code interacts with the ESP32 through a UART connection.
 
 **Note that level-shifting is required or you will damage your ESP32.**
 
@@ -8,7 +8,7 @@ Connect `TXD1` on the 32U4 to `RX2` on the ESP32. **Level-shifting is required!*
 
 To send a message, use the `sendMessage()` function. See the code for the parameters.
 
-Note that the ESP32 code relies on a newline character to recognize string termination. `Serial1` must be set up with a baud rate of 115200 (unless you change the ESP32 example, in which case you can use whatever you want, so long as they agree).
+Note that the ESP32 code relies on a newline character to recognize string termination. `Serial1` must be set up with a baud rate of 115200 (unless you change the ESP32 example, in which case you can use whatever baud rate you want, so long as they agree).
 
 This example does not implement message reception. To receive messages, you'll need to write code to look for strings with the format, `topic:message`, on `Serial1`. As with sending messages, such strings are newline terminated. 
 
