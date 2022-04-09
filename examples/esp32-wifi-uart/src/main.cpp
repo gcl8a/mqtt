@@ -30,6 +30,14 @@ bool checkSerial2(void)
     return false;
 }
 
+/**
+ * publishMQTT parses a message (received as "topic:message" over Serial) 
+ * and appends the topic/message to the team number and sends it to an MQTT broker.
+ * The MQTT packet will have the format
+ * 
+ *      "teamN/topic/message"
+ * 
+ * */
 bool publishMQTT(String& str)
 {
     Serial.println(str);
@@ -53,6 +61,11 @@ bool publishMQTT(String& str)
     return success;
 }
 
+/**
+ * callback() gets called whenever we receive a message for this team number 
+ * (i.e., "teamN"). It strips off the team name and sends "topic:message"
+ * over the UART.
+ * */
 void callback(char* topic, byte *payload, unsigned int length) 
 {
     // These two lines can be commented out; they are used for testing and don't affect functionality
