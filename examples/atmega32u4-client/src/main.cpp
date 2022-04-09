@@ -24,8 +24,8 @@ void setup()
 
 /**
  * This basic example sends the time (from millis()) to an MQTT broker every
- * five seconds. See the readme in the matching ESP32 code for instructions 
- * on how to set up credentials.
+ * five seconds. See the `readme.md` in the root directory of this repo for 
+ * how to set up credentials. 
  * */
 void loop() 
 {
