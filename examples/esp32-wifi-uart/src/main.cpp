@@ -88,7 +88,7 @@ void callback(char* topic, byte *payload, unsigned int length)
 void setup() 
 {
     Serial.begin(115200);
-    delay(500);  //give it a moment to bring up the Serial
+    delay(500);  //give us a moment to bring up the Serial
 
     Serial.println("setup()");
 
