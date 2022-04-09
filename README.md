@@ -26,6 +26,6 @@ The examples demonstrate the workflow shown below. Call `sendMessage(topic, mess
 
 The ESP32 example will subscribe to all messages that have the team number as the root topic and pass messages on to the Romi. It is up to the user to create a means of handling messages received.
 
-See the readme's in the specific examples for more information on how to implement them.
+If your Romi/Leonardo is running at 5V (the default), **you must use a level shifter to drop the voltage from the `TX` on the Romi to the `RX` on the ESP32.** See the readme's in the specific examples for more information.
 
 ![](mqtt.001.png)
