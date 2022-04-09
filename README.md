@@ -26,4 +26,4 @@ The examples demonstrate the workflow shown below. Call `sendMessage(topic, mess
 
 The ESP32 example will subscribe to all messages that have the team number as the root topic and pass messages on to the Romi. It is up to the user to create a means of handling messages received.
 
-![[mqtt.png]]
+![[mqtt.001.png]]
