@@ -92,13 +92,13 @@ bool mqtt_reconnect(uint32_t timeout)
       // Attempt to connect
       if(client.connect(clientId.c_str(), MQTT_USER, MQTT_PASSWORD)) 
       {
-        Serial.println("connected");
+        Serial.println("Connected to broker");
         return true;
       } 
 
       else 
       {
-        Serial.print("failed, rc = ");
+        Serial.print("Failed, rc = ");
         Serial.print(client.state());
         Serial.println("; will try again");
 
