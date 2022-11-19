@@ -6,7 +6,7 @@ PubSubClient client(wifiClient);
 
 const uint32_t KEEP_ALIVE_INTERVAL = 20;
 
-uint32_t lastWiFiCxnAttempt = 0;
+uint32_t lastWiFiCxnAttempt = (uint32_t) -100000; //do this to force a reconnect at start
 uint32_t wifiCxnRetryInterval = 5000;
 bool connecting = false;
 
