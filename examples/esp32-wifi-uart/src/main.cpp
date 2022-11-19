@@ -88,12 +88,13 @@ void callback(char* topic, byte *payload, unsigned int length)
 void setup() 
 {
     Serial.begin(115200);
-    delay(500);  //give us a moment to bring up the Serial
+    delay(100);  //give us a moment to bring up the Serial
 
     Serial.println("setup()");
 
     Serial2.begin(115200);
 
+    wifi_reconnect(true);
     mqtt_reconnect(5000);
 
     client.setCallback(callback);
