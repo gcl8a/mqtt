@@ -6,18 +6,6 @@ PubSubClient client(wifiClient);
 
 const uint32_t KEEP_ALIVE_INTERVAL = 20;
 
-// void setup_wifi() 
-// {
-//     delay(10);
-//     // We start by connecting to a WiFi network
-//     WiFi.begin(ssid, password);
-//     while (WiFi.status() != WL_CONNECTED) {
-//       delay(500);
-//       Serial.print(".");
-//     }
-
-// }
-
 uint32_t lastWiFiCxnAttempt = 0;
 uint32_t wifiCxnRetryInterval = 5000;
 bool connecting = false;
@@ -136,6 +124,7 @@ bool mqtt_reconnect(uint32_t timeout)
 //     Serial.println();
 // }
 
+// obsolete calls; use xyz_reconnect() directly
 void setup_wifi(void) {wifi_reconnect();} 
 void setup_mqtt(void) {mqtt_reconnect();}
 bool reconnect(void) {return mqtt_reconnect();}

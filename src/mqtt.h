@@ -13,7 +13,7 @@
 bool wifi_reconnect(void);
 bool mqtt_reconnect(uint32_t timeout = 0);
 
-//obsolete; just use reconnect_xyz methods; left here for legacy
+//obsolete; just use xyz_reconnect methods; left here for legacy
 void setup_wifi(void);
 void setup_mqtt(void);
 bool reconnect(void);
