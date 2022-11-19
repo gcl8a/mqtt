@@ -50,7 +50,7 @@ bool publishMQTT(String& str)
         return false;
     }
 
-    reconnect(); // checks if connected and attempts to reconnect
+    mqtt_reconnect(); // checks if connected and attempts to reconnect
 
     String topic = String("team") + String (teamNumber) + String('/') + str.substring(0, iCol);
     String message = str.substring(iCol + 1);
@@ -94,7 +94,7 @@ void setup()
 
     Serial2.begin(115200);
 
-    setup_mqtt();
+    mqtt_reconnect(5000);
 
     client.setCallback(callback);
 
