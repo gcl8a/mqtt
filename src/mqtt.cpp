@@ -112,6 +112,12 @@ bool mqtt_reconnect(uint32_t timeout)
   return true;
 }
 
+void setup_mqtt(void) 
+{    
+  wifi_reconnect(true);
+  mqtt_reconnect(5000);
+} 
+
 /** You can use this callback to test connectivity, but it only prints
  * messages -- you'll have to customize it for your purposes (which is
  * better done in your application -- see the examples)
@@ -125,11 +131,5 @@ bool mqtt_reconnect(uint32_t timeout)
 // }
 
 // obsolete calls; best to use xyz_reconnect() directly
-void setup_mqtt(void) 
-{    
-  wifi_reconnect(true);
-  mqtt_reconnect(5000);
-} 
-
 void setup_wifi(void) {mqtt_reconnect();}
 bool reconnect(void) {return mqtt_reconnect();}
