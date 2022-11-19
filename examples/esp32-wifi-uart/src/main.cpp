@@ -94,7 +94,7 @@ void setup()
 
     Serial2.begin(115200);
 
-    mqtt_setup(); //sets up both wifi and mqtt broker
+    setup_mqtt(); //sets up both wifi and mqtt broker
 
     client.setCallback(callback);
 
