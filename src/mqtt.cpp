@@ -6,15 +6,15 @@ PubSubClient client(wifiClient);
 
 const uint32_t KEEP_ALIVE_INTERVAL = 20;
 
-uint32_t lastWiFiCxnAttempt = (uint32_t) -100000; //do this to force a reconnect at start
+uint32_t lastWiFiCxnAttempt = 0;
 uint32_t wifiCxnRetryInterval = 5000;
 bool connecting = false;
 
-bool wifi_reconnect(void)
+bool wifi_reconnect(bool forceReconnect)
 {
   if(WiFi.status() != WL_CONNECTED)
   {
-    if(millis() - lastWiFiCxnAttempt > wifiCxnRetryInterval)
+    if(millis() - lastWiFiCxnAttempt > wifiCxnRetryInterval || forceReconnect)
     {
       Serial.print("Connecting to ");
       Serial.println(ssid);

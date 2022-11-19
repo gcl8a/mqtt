@@ -10,7 +10,7 @@
 
 #include <PubSubClient.h>
 
-bool wifi_reconnect(void);
+bool wifi_reconnect(bool forceReconnect = false);
 bool mqtt_reconnect(uint32_t timeout = 0);
 
 //obsolete; just use xyz_reconnect methods; left here for legacy
