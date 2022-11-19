@@ -124,7 +124,12 @@ bool mqtt_reconnect(uint32_t timeout)
 //     Serial.println();
 // }
 
-// obsolete calls; use xyz_reconnect() directly
-void setup_wifi(void) {wifi_reconnect();} 
-void setup_mqtt(void) {mqtt_reconnect();}
+// obsolete calls; best to use xyz_reconnect() directly
+void setup_mqtt(void) 
+{    
+  wifi_reconnect(true);
+  mqtt_reconnect(5000);
+} 
+
+void setup_wifi(void) {mqtt_reconnect();}
 bool reconnect(void) {return mqtt_reconnect();}
