@@ -1,8 +1,12 @@
 #include <Arduino.h>
 #include <PubSubClient.h>
 #include <mqtt.h>
+#include <button.h>
 
-const int teamNumber = 0;
+const int teamNumber = 2;
+
+// use the button for forcing a message (for testing)
+Button bootButton(0);
 
 String rxString;
 bool checkSerial(void)
@@ -92,6 +96,8 @@ void setup()
 
     Serial.println("setup()");
 
+    bootButton.init();
+
     Serial2.begin(115200);
 
     setup_mqtt(); //sets up both wifi and mqtt broker
@@ -111,4 +117,6 @@ void loop()
     
     if(checkSerial()) publishMQTT(rxString);
     if(checkSerial2()) publishMQTT(rx2String);
+
+    if(bootButton.checkButtonPress()) {String bStr("button0:1"); publishMQTT(bStr);}
 }
