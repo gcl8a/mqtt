@@ -111,7 +111,7 @@ void setup()
 
 void loop() 
 {
-    client.loop();
+    if(!client.loop()) {mqtt_reconnect();}
     
     if(checkSerial()) publishMQTT(rxString);
     if(checkSerial2()) publishMQTT(rx2String);
