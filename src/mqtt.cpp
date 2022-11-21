@@ -16,18 +16,19 @@ bool wifi_reconnect(bool forceReconnect)
   {
     if(millis() - lastWiFiCxnAttempt > wifiCxnRetryInterval || forceReconnect)
     {
-      Serial.print("Connecting to ");
-      Serial.println(ssid);
-
       Serial.print("My MAC address is ");
       Serial.println(WiFi.macAddress());
       Serial.println();
+
+      Serial.print("Connecting to ");
+      Serial.print(ssid);
 
       lastWiFiCxnAttempt = millis();
       WiFi.begin(ssid, password);
 
       connecting = true;
     }
+    Serial.print('.');
   }
 
   // use separate if for when the above connects
