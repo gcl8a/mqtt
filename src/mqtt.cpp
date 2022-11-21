@@ -80,7 +80,7 @@ bool mqtt_reconnect(uint32_t timeout)
       client.setServer(mqtt_server, mqtt_port);
       client.setKeepAlive(KEEP_ALIVE_INTERVAL);
 
-      Serial.print("MQTT cxn...");
+      Serial.println("MQTT cxn...");
       
       // Create a random client ID
       String clientId = "ESP32Client-";
@@ -98,7 +98,7 @@ bool mqtt_reconnect(uint32_t timeout)
 
       else 
       {
-        Serial.print("Failed, rc = ");
+        Serial.print("Failed, Error = ");
         Serial.print(client.state());
         Serial.println("; will try again");
 
