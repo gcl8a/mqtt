@@ -3,8 +3,6 @@
 #include <mqtt.h>
 #include <button.h>
 
-const int teamNumber = 2;
-
 // use the button for forcing a message (for testing)
 Button bootButton(0);
 
