@@ -15,7 +15,7 @@ To use the library, you will need to create a file, `wifi_credentials.h`, that d
 
     ```
     const char* mqtt_server = "<mqtt-server-name>";
-    #define mqtt_port <mqtt port>
+    #define mqtt_port <mqtt port> // typically 1883
     #define MQTT_USER "<username>"
     #define MQTT_PASSWORD "<password>"
     ```
@@ -28,4 +28,4 @@ The ESP32 example will subscribe to all messages that have the team number as th
 
 If your Romi/Leonardo is running at 5V (the default), **you must use a level shifter to drop the voltage from the `TX` on the Romi to the `RX` on the ESP32.** See the readme's in the specific examples for more information.
 
-![](mqtt.001.png)
+![](docs/mqtt.001.png)
