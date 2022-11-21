@@ -28,7 +28,6 @@ bool wifi_reconnect(bool forceReconnect)
 
       connecting = true;
     }
-    Serial.print('.');
   }
 
   // use separate if for when the above connects
