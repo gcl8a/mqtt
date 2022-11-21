@@ -96,8 +96,6 @@ void setup()
 
     Serial.println("setup()");
 
-    bootButton.init();
-
     Serial2.begin(115200);
 
     setup_mqtt(); //sets up both wifi and mqtt broker
@@ -107,6 +105,8 @@ void setup()
     // Subscribes to *all* topics for your team by default (including messages you send!)
     String topics = String("team") + String(teamNumber) + String("/#");
     client.subscribe(topics.c_str());
+
+    bootButton.init();
 
     Serial.println("/setup()");
 }
