@@ -102,6 +102,10 @@ void setup()
 
     // Subscribes to *all* topics for your team by default (including messages you send!)
     String topics = String("team") + String(teamNumber) + String("/#");
+    while(!client.connected()) 
+    {
+        mqtt_reconnect();
+    }
     client.subscribe(topics.c_str());
 
     bootButton.init();
@@ -116,5 +120,5 @@ void loop()
     if(checkSerial()) publishMQTT(rxString);
     if(checkSerial2()) publishMQTT(rx2String);
 
-    if(bootButton.checkButtonPress()) {String bStr("button0:1"); publishMQTT(bStr);}
+    if(bootButton.checkButtonPress()) { String bStr("button0:1"); publishMQTT(bStr);}
 }
