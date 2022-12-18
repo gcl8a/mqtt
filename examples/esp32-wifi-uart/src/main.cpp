@@ -96,7 +96,11 @@ void setup()
 
     Serial2.begin(115200);
 
-    setup_mqtt(); //sets up both wifi and mqtt broker
+    while(!client.connected())
+    {
+        mqtt_reconnect(5000);
+    }
+    //setup_mqtt(); //sets up both wifi and mqtt broker
 
     client.setCallback(callback);
 
@@ -116,5 +120,6 @@ void loop()
     if(checkSerial()) publishMQTT(rxString);
     if(checkSerial2()) publishMQTT(rx2String);
 
-    if(bootButton.checkButtonPress()) {String bStr("button0:1"); publishMQTT(bStr);}
+    //if(bootButton.checkButtonPress()) {String bStr("robot1/button0:1"); publishMQTT(bStr);}
+    if(!digitalRead(0)) {String bStr("robot1/button0:1"); publishMQTT(bStr);}
 }
