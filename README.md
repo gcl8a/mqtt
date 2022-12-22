@@ -1,6 +1,6 @@
-# mqtt
+# MQTT
 
-An Arduino wrapper for [PubSubClient](https://pubsubclient.knolleary.net) that manages connectivity. The wrapper functions make use of non-blocking connection checking. 
+An Arduino wrapper for [PubSubClient](https://pubsubclient.knolleary.net) that manages MQTT connectivity. The wrapper functions make use of non-blocking connection checking. 
 
 To use the library, you will need to create a file, `wifi_credentials.h`, that declares:
 
