@@ -9,7 +9,7 @@ Button bootButton(0);
 String rxString;
 bool checkSerial(void)
 {
-    if(Serial.available())
+    while(Serial.available())
     {
         char c = Serial.read();
         if(c == '\n') return true;
@@ -22,7 +22,7 @@ bool checkSerial(void)
 String rx2String;
 bool checkSerial2(void)
 {
-    if(Serial2.available())
+    while(Serial2.available())
     {
         char c = Serial2.read();
         if(c == '\n') return true;

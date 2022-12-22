@@ -19,6 +19,8 @@ void setup()
 
     Serial1.begin(115200);
 
+    pinMode(A2, INPUT_PULLUP);
+
     Serial.println("/setup()");
 }
 
@@ -36,4 +38,12 @@ void loop()
         lastSend = currTime;
         sendMessage("time", String(currTime));
     }
+
+    if(Serial1.available())
+    {
+        char c = Serial1.read();
+        Serial.print(c);
+    }
+
+    if(!digitalRead(A2)) {sendMessage("Romi/button", "pressed");}
 }
