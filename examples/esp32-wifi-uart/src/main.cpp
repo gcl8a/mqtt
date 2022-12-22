@@ -124,6 +124,5 @@ void loop()
     if(checkSerial()) publishMQTT(rxString);
     if(checkSerial2()) publishMQTT(rx2String);
 
-    //if(bootButton.checkButtonPress()) {String bStr("robot1/button0:1"); publishMQTT(bStr);}
-    if(!digitalRead(0)) {String bStr("robot1/button0:1"); publishMQTT(bStr);}
+    if(bootButton.checkButtonPress()) {String bStr("robot1/button0:1"); publishMQTT(bStr);}    
 }
