@@ -42,20 +42,30 @@ bool checkSerial2(void)
  * */
 bool publishMQTT(String& str)
 {
+    // for debugging; comment out if you don't need this
     Serial.println(str);
 
-    int iCol = str.indexOf(':');
-    if(iCol == -1) 
+    /**
+     * On the Serial, messages must be formatted topic:msg. If we don't find a colon, then 
+     * ignore the message.
+    */
+    int iColon = str.indexOf(':');
+    if(iColon == -1) 
     {
         Serial.println("Failed to find delimiter");
         str = "";
         return false;
     }
 
-    mqtt_reconnect(); // checks if connected and attempts to reconnect
+    /**
+     * Checks if connected and attempts to reconnect. If we're not connected, we'll likely lose the 
+     * message below, since it takes a moment to actually reconnect. You can make the connection blocking
+     * by testing client.connected()
+    */
+    mqtt_reconnect(); 
 
-    String topic = String("team") + String (teamNumber) + String('/') + str.substring(0, iCol);
-    String message = str.substring(iCol + 1);
+    String topic = String("team") + String (teamNumber) + String('/') + str.substring(0, iColon);
+    String message = str.substring(iColon + 1);
 
     bool success = client.publish(topic.c_str(), message.c_str());
     str = "";
@@ -128,10 +138,12 @@ void setup()
 
 void loop() 
 {
+    // mqtt_reconnect() tests for a cxn and reconnects, if needed
     if(!client.loop()) {mqtt_reconnect();}
     
     if(checkSerial()) publishMQTT(rxString);
     if(checkSerial2()) publishMQTT(rx2String);
 
+    // For testing connectivity:
     if(bootButton.checkButtonPress()) {String bStr("robot1/button0:1"); publishMQTT(bStr);}    
 }
