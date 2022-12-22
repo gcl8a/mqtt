@@ -64,7 +64,7 @@ bool publishMQTT(String& str)
 }
 
 /**
- * callback() gets called whenever we receive a message for this team number 
+ * callback() gets called whenever we receive a message for this team  
  * (i.e., "teamN"). It strips off the team name and sends "topic:message"
  * over the UART.
  * */
@@ -96,22 +96,31 @@ void setup()
 
     Serial2.begin(115200);
 
-    while(!client.connected())
-    {
-        mqtt_reconnect(5000);
-    }
-    //setup_mqtt(); //sets up both wifi and mqtt broker
-
+    /**
+     * Sets the callback function that gets called for every message received from the broker.
+    */
     client.setCallback(callback);
 
-    // Subscribes to *all* topics for your team by default (including messages you send!)
-    String topics = String("team") + String(teamNumber) + String("/#");
+    /**
+     * We'll block while we connect. Connection can be done asynchronously, but we need to be connected
+     * before we subscribe to topics.
+    */
     while(!client.connected()) 
     {
         mqtt_reconnect();
     }
+
+    /**
+     * Subscribes to ALL topics for your team by default (including messages this robot sends!)
+     * which is great for testing, but will eat up resources. Be sure to change your subscriptions
+     * for the final implementation
+    */
+    String topics = String("team") + String(teamNumber) + String("/#");
     client.subscribe(topics.c_str());
 
+    /**
+     * Using button class, so must call init()
+    */
     bootButton.init();
 
     Serial.println("/setup()");
