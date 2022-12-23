@@ -6,6 +6,9 @@
 // use the button for forcing a message (for testing)
 Button bootButton(0);
 
+/**
+ * Check for input on Serial (and Serial2 in the next function). Ignores \r. Terminates on \n.
+*/
 String rxString;
 bool checkSerial(void)
 {
@@ -52,7 +55,7 @@ bool publishMQTT(String& str)
     int iColon = str.indexOf(':');
     if(iColon == -1) 
     {
-        Serial.println("Failed to find delimiter");
+        Serial.println("Failed to find delimiter.");
         str = "";
         return false;
     }
