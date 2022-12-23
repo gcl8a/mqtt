@@ -141,6 +141,9 @@ void loop()
     // mqtt_reconnect() tests for a cxn and reconnects, if needed
     if(!client.loop()) {mqtt_reconnect();}
     
+    /**
+     * Receives input on both Serial and Serial2. 
+    */
     if(checkSerial()) publishMQTT(rxString);
     if(checkSerial2()) publishMQTT(rx2String);
 
