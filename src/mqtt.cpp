@@ -6,8 +6,8 @@ PubSubClient client(wifiClient);
 
 const uint32_t KEEP_ALIVE_INTERVAL = 120; // two minutes
 
-uint32_t lastWiFiCxnAttempt = 0;
 uint32_t wifiCxnRetryInterval = 5000;
+uint32_t lastWiFiCxnAttempt = -wifiCxnRetryInterval;
 bool connecting = false;
 
 /**
@@ -17,6 +17,8 @@ bool connecting = false;
 */
 bool wifi_reconnect(bool forceReconnect)
 {
+  static uint32_t lastDot = 0;
+
   if(WiFi.status() != WL_CONNECTED)
   {
     if(millis() - lastWiFiCxnAttempt > wifiCxnRetryInterval || forceReconnect)
@@ -28,13 +30,14 @@ bool wifi_reconnect(bool forceReconnect)
       Serial.print(ssid);
 
       lastWiFiCxnAttempt = millis();
+      lastDot = lastWiFiCxnAttempt;
+
       WiFi.begin(ssid, password);
 
       connecting = true;
     }
 
     // This just prints out dots while it's trying to connect.
-    static uint32_t lastDot = 0;
     if(millis() - lastDot > 500) 
     {
       lastDot = millis();
@@ -48,7 +51,7 @@ bool wifi_reconnect(bool forceReconnect)
     // if we've trying to connect, let us know we succeeded
     if(connecting)
     {
-      Serial.println("Connected with IP address: ");
+      Serial.print("\nConnected with IP address: ");
       Serial.println(WiFi.localIP());
 
       connecting = false;
