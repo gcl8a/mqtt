@@ -11,14 +11,7 @@
 #include <PubSubClient.h>
 
 bool wifi_reconnect(bool forceReconnect = false);
-bool mqtt_reconnect(uint32_t timeout = 0);
-
-//obsolete; just use xyz_reconnect methods; left here for legacy
-void setup_wifi(void);
-void setup_mqtt(void);
-bool reconnect(void);
-
-//void callback(char* topic, byte *payload, unsigned int length);
+bool mqtt_reconnect(void (*subscriptions)(void));
 
 extern WiFiClient wifiClient;
 extern PubSubClient client;

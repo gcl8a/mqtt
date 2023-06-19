@@ -60,13 +60,6 @@ bool publishMQTT(String& str)
         return false;
     }
 
-    /**
-     * Checks if connected and attempts to reconnect. If we're not connected, we'll likely lose the 
-     * message below, since it takes a moment to actually reconnect. You can make the connection blocking
-     * by testing client.connected()
-    */
-    mqtt_reconnect(); 
-
     String topic = String("team") + String (teamNumber) + String('/') + str.substring(0, iColon);
     String message = str.substring(iColon + 1);
 
@@ -89,20 +82,32 @@ void callback(char* topic, byte *payload, unsigned int length)
 
     String strTopic(topic);
 
+    // This prints to the Serial monitor
     Serial.print(strTopic.substring(strTopic.indexOf('/') + 1));
     Serial.print(':');  
     Serial.write(payload, length);
     Serial.println();
 
+    // This prints to Serial2, which can be connected to another uC
     Serial2.print(strTopic.substring(strTopic.indexOf('/') + 1));
     Serial2.print(':');  
     Serial2.write(payload, length);
     Serial2.println();
 }
 
+/**
+ * subscriptions() is passed to the connection method and gets called whenever there is 
+ * a new connection, which will re-establish your subscriptions if the cxn is dropped.
+*/
 void subscriptions(void)
 {
-    client.subscribe()
+    /**
+     * Subscribes to ALL topics for your team by default (including messages this robot sends!)
+     * which is great for testing, but will eat up resources. Be sure to change your subscriptions
+     * for the final implementation
+    */
+    String topics = String("team") + String(teamNumber) + String("/#");
+    client.subscribe(topics.c_str());
 }
 
 void setup() 
@@ -118,8 +123,6 @@ void setup()
      * Sets the callback function that gets called for every message received from the broker.
     */
     client.setCallback(callback);
-
-    mqtt_reconnect();
 
     /**
      * Using button class, so must call init()
