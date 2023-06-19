@@ -9,6 +9,9 @@ Button bootButton(0);
 /**
  * subscriptions is passed to the connection method so that the client will
  * re-establish your subscriptions if the cxn is dropped.
+ * 
+ * By default, we subscribe to all of the messages for the team, but you may
+ * want to edit the list to avoid overwhelming the cxn.
 */
 String subscriptions[] = 
 {
@@ -138,5 +141,5 @@ void loop()
     if(checkSerial2()) publishMQTT(rx2String);
 
     // For testing connectivity:
-    if(bootButton.checkButtonPress()) {String bStr("robot1/button0:1"); publishMQTT(bStr);}    
+    if(bootButton.checkButtonPress()) {String bStr("button0:pressed"); publishMQTT(bStr);}    
 }
