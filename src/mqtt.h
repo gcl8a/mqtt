@@ -12,6 +12,7 @@
 
 bool wifi_reconnect(bool forceReconnect = false);
 bool mqtt_reconnect(void (*subscriptions)(void));
+bool mqtt_reconnect(String* subscriptions, uint8_t subcount);
 
 extern WiFiClient wifiClient;
 extern PubSubClient client;

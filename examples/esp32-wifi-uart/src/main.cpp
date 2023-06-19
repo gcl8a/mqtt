@@ -7,6 +7,15 @@
 Button bootButton(0);
 
 /**
+ * subscriptions is passed to the connection method so that the client will
+ * re-establish your subscriptions if the cxn is dropped.
+*/
+String subscriptions[] = 
+{
+    String("team") + String(teamNumber) + String("/#")
+};
+
+/**
  * Check for input on Serial (and Serial2 in the next function). Ignores \r. Terminates on \n.
 */
 String rxString;
@@ -95,21 +104,6 @@ void callback(char* topic, byte *payload, unsigned int length)
     Serial2.println();
 }
 
-/**
- * subscriptions() is passed to the connection method and gets called whenever there is 
- * a new connection, which will re-establish your subscriptions if the cxn is dropped.
-*/
-void subscriptions(void)
-{
-    /**
-     * Subscribes to ALL topics for your team by default (including messages this robot sends!)
-     * which is great for testing, but will eat up resources. Be sure to change your subscriptions
-     * for the final implementation
-    */
-    String topics = String("team") + String(teamNumber) + String("/#");
-    client.subscribe(topics.c_str());
-}
-
 void setup() 
 {
     Serial.begin(115200);
@@ -135,7 +129,7 @@ void setup()
 void loop() 
 {
     // mqtt_reconnect() tests for a cxn and reconnects, if needed
-    if(!client.loop()) {mqtt_reconnect(subscriptions);}
+    if(!client.loop()) {mqtt_reconnect(subscriptions, sizeof(subscriptions)/sizeof(String));}
     
     /**
      * Receives input on both Serial and Serial2. 

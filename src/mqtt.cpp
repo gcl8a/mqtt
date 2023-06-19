@@ -60,7 +60,7 @@ uint32_t mqttCxnRetryInterval = 1500;
  * Also non-blocking. It first checks to see if the wifi is connected and then 
  * attempts to connect to the MQTT broker. 
 */
-bool mqtt_reconnect(void (*subscriptions)(void)) 
+bool mqtt_reconnect(String* subscriptions, uint8_t subCount) 
 {
   bool wifi_cxn = wifi_reconnect();
 
@@ -87,7 +87,8 @@ bool mqtt_reconnect(void (*subscriptions)(void))
       if(client.connect(clientId.c_str(), MQTT_USER, MQTT_PASSWORD)) 
       {
         Serial.println("Connected to broker");
-        subscriptions();
+        for(uint8_t i = 0; i < subCount; i++)
+          client.subscribe(subscriptions[i].c_str());
         return true;
       } 
 
