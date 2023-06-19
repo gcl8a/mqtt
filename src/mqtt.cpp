@@ -53,8 +53,8 @@ bool wifi_reconnect(bool forceReconnect)
   return false;
 }
 
-uint32_t lastCxnAttempt = 0;
-uint32_t cxnRetryInterval = 1500;
+uint32_t lastMQTTCxnAttempt = 0;
+uint32_t mqttCxnRetryInterval = 1500;
 
 /**
  * Also non-blocking. It first checks to see if the wifi is connected and then 
@@ -69,20 +69,18 @@ bool mqtt_reconnect(void (*subscriptions)(void))
   //try to reconnect once
   if(!client.connected()) 
   {
-    if(millis() - lastCxnAttempt > cxnRetryInterval)
+    if(millis() - lastMQTTCxnAttempt > mqttCxnRetryInterval)
     {
-      lastCxnAttempt = millis();
+      lastMQTTCxnAttempt = millis();
 
       client.setServer(mqtt_server, mqtt_port);
       client.setKeepAlive(KEEP_ALIVE_INTERVAL);
 
-      Serial.println("MQTT cxn...");
-      
       // Create client ID derived from this device's MAC address
       String clientId = "Client-";
       clientId += String(WiFi.macAddress());
 
-      Serial.print("Connecting as: ");
+      Serial.print("Attempting cxn as: ");
       Serial.println(clientId);
       
       // Attempt to connect
@@ -95,7 +93,7 @@ bool mqtt_reconnect(void (*subscriptions)(void))
 
       else 
       {
-        Serial.print("Failed, Error = ");
+        Serial.print("Failed with Error = ");
         Serial.print(client.state());
         Serial.println("; will try again");
 
