@@ -100,6 +100,11 @@ void callback(char* topic, byte *payload, unsigned int length)
     Serial2.println();
 }
 
+void subscriptions(void)
+{
+    client.subscribe()
+}
+
 void setup() 
 {
     Serial.begin(115200);
@@ -114,22 +119,7 @@ void setup()
     */
     client.setCallback(callback);
 
-    /**
-     * We'll block while we connect. Connection can be done asynchronously, but we need to be connected
-     * before we subscribe to topics.
-    */
-    while(!client.connected()) 
-    {
-        mqtt_reconnect();
-    }
-
-    /**
-     * Subscribes to ALL topics for your team by default (including messages this robot sends!)
-     * which is great for testing, but will eat up resources. Be sure to change your subscriptions
-     * for the final implementation
-    */
-    String topics = String("team") + String(teamNumber) + String("/#");
-    client.subscribe(topics.c_str());
+    mqtt_reconnect();
 
     /**
      * Using button class, so must call init()
@@ -142,7 +132,7 @@ void setup()
 void loop() 
 {
     // mqtt_reconnect() tests for a cxn and reconnects, if needed
-    if(!client.loop()) {mqtt_reconnect();}
+    if(!client.loop()) {mqtt_reconnect(subscriptions);}
     
     /**
      * Receives input on both Serial and Serial2. 
