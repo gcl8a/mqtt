@@ -7,6 +7,18 @@
 Button bootButton(0);
 
 /**
+ * subscriptions is passed to the connection method so that the client will
+ * re-establish your subscriptions if the cxn is dropped.
+ * 
+ * By default, we subscribe to all of the messages for the team, but you may
+ * want to edit the list to avoid overwhelming the cxn.
+*/
+String subscriptions[] = 
+{
+    String("/#")
+};
+
+/**
  * Check for input on Serial (and Serial2 in the next function). Ignores \r. Terminates on \n.
 */
 String rxString;
@@ -60,14 +72,7 @@ bool publishMQTT(String& str)
         return false;
     }
 
-    /**
-     * Checks if connected and attempts to reconnect. If we're not connected, we'll likely lose the 
-     * message below, since it takes a moment to actually reconnect. You can make the connection blocking
-     * by testing client.connected()
-    */
-    mqtt_reconnect(); 
-
-    String topic = String("team") + String (teamNumber) + String('/') + str.substring(0, iColon);
+    String topic = str.substring(0, iColon);
     String message = str.substring(iColon + 1);
 
     bool success = client.publish(topic.c_str(), message.c_str());
@@ -89,11 +94,13 @@ void callback(char* topic, byte *payload, unsigned int length)
 
     String strTopic(topic);
 
+    // This prints to the Serial monitor
     Serial.print(strTopic.substring(strTopic.indexOf('/') + 1));
     Serial.print(':');  
     Serial.write(payload, length);
     Serial.println();
 
+    // This prints to Serial2, which can be connected to another uC
     Serial2.print(strTopic.substring(strTopic.indexOf('/') + 1));
     Serial2.print(':');  
     Serial2.write(payload, length);
@@ -115,23 +122,6 @@ void setup()
     client.setCallback(callback);
 
     /**
-     * We'll block while we connect. Connection can be done asynchronously, but we need to be connected
-     * before we subscribe to topics.
-    */
-    while(!client.connected()) 
-    {
-        mqtt_reconnect();
-    }
-
-    /**
-     * Subscribes to ALL topics for your team by default (including messages this robot sends!)
-     * which is great for testing, but will eat up resources. Be sure to change your subscriptions
-     * for the final implementation
-    */
-    String topics = String("team") + String(teamNumber) + String("/#");
-    client.subscribe(topics.c_str());
-
-    /**
      * Using button class, so must call init()
     */
     bootButton.init();
@@ -142,7 +132,7 @@ void setup()
 void loop() 
 {
     // mqtt_reconnect() tests for a cxn and reconnects, if needed
-    if(!client.loop()) {mqtt_reconnect();}
+    if(!client.loop()) {mqtt_reconnect(subscriptions, sizeof(subscriptions)/sizeof(String));}
     
     /**
      * Receives input on both Serial and Serial2. 
@@ -151,5 +141,5 @@ void loop()
     if(checkSerial2()) publishMQTT(rx2String);
 
     // For testing connectivity:
-    if(bootButton.checkButtonPress()) {String bStr("robot1/button0:1"); publishMQTT(bStr);}    
+    if(bootButton.checkButtonPress()) {String bStr("button0:pressed"); publishMQTT(bStr);}    
 }
