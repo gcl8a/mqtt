@@ -1,15 +1,20 @@
 #include <mqtt.h>
 #include <wifi_credentials.h>
 
-WiFiClient wifiClient;
+WiFiClientSecure wifiClient;
 PubSubClient client(wifiClient);
 
-const uint32_t KEEP_ALIVE_INTERVAL = 20;
+const uint32_t KEEP_ALIVE_INTERVAL = 120; // two minutes
 
-uint32_t lastWiFiCxnAttempt = 0;
 uint32_t wifiCxnRetryInterval = 5000;
+uint32_t lastWiFiCxnAttempt = -wifiCxnRetryInterval; // so we start right away
 bool connecting = false;
 
+/**
+ * This is non-blocking. You must call it repeatedly if you want to check/ensure
+ * a connection. It maintains an internal clock so that you can call reconnect as
+ * often as you want, but it won't throttle (unless you assert forctReconnect).
+*/
 bool wifi_reconnect(bool forceReconnect)
 {
   if(WiFi.status() != WL_CONNECTED)
@@ -23,16 +28,11 @@ bool wifi_reconnect(bool forceReconnect)
       Serial.print(ssid);
 
       lastWiFiCxnAttempt = millis();
+
+      WiFi.mode(WIFI_STA);
       WiFi.begin(ssid, password);
 
       connecting = true;
-    }
-
-    static uint32_t lastDot = 0;
-    if(millis() - lastDot > 500) 
-    {
-      lastDot = millis();
-      Serial.print('.');
     }
   }
 
@@ -42,7 +42,7 @@ bool wifi_reconnect(bool forceReconnect)
     // if we've trying to connect, let us know we succeeded
     if(connecting)
     {
-      Serial.println("Connected with IP address: ");
+      Serial.print("\nConnected with IP address: ");
       Serial.println(WiFi.localIP());
 
       connecting = false;
@@ -54,57 +54,49 @@ bool wifi_reconnect(bool forceReconnect)
   return false;
 }
 
-uint32_t lastCxnAttempt = 0;
-uint32_t cxnRetryInterval = 1500;
+uint32_t lastMQTTCxnAttempt = 0;
+uint32_t mqttCxnRetryInterval = 1500;
 
-bool mqtt_reconnect(uint32_t timeout) 
+/**
+ * Also non-blocking. It first checks to see if the wifi is connected and then 
+ * attempts to connect to the MQTT broker. 
+*/
+bool mqtt_reconnect(String* subscriptions, uint8_t subCount) 
 {
   bool wifi_cxn = wifi_reconnect();
-
-  if(!wifi_cxn)
-  {
-    if(timeout) //if timeout is not zero, keep trying to reconnect for the timeout period
-    {
-      uint32_t startTime = millis();
-      while(millis() - startTime < timeout)
-      {
-        wifi_cxn = wifi_reconnect();
-        if(wifi_cxn) break;
-      }
-    }
-  }
 
   if(!wifi_cxn) return false;
 
   //try to reconnect once
   if(!client.connected()) 
   {
-    if(millis() - lastCxnAttempt > cxnRetryInterval)
+    if(millis() - lastMQTTCxnAttempt > mqttCxnRetryInterval)
     {
-      lastCxnAttempt = millis();
+      lastMQTTCxnAttempt = millis();
 
+      wifiClient.setCACert(root_ca);
       client.setServer(mqtt_server, mqtt_port);
       client.setKeepAlive(KEEP_ALIVE_INTERVAL);
 
-      Serial.println("MQTT cxn...");
-      
-      // Create a random client ID
-      String clientId = "ESP32Client-";
+      // Create client ID derived from this device's MAC address
+      String clientId = "Client-";
       clientId += String(WiFi.macAddress());
 
-      Serial.print("Connecting as: ");
+      Serial.print("Attempting cxn as: ");
       Serial.println(clientId);
       
       // Attempt to connect
-      if(client.connect(clientId.c_str(), MQTT_USER, MQTT_PASSWORD)) 
+      if(client.connect(clientId.c_str(), mqtt_username, mqtt_password)) 
       {
         Serial.println("Connected to broker");
+        for(uint8_t i = 0; i < subCount; i++)
+          client.subscribe(subscriptions[i].c_str());
         return true;
       } 
 
       else 
       {
-        Serial.print("Failed, Error = ");
+        Serial.print("Failed with Error = ");
         Serial.print(client.state());
         Serial.println("; will try again");
 
@@ -117,25 +109,3 @@ bool mqtt_reconnect(uint32_t timeout)
 
   return true;
 }
-
-void setup_mqtt(void) 
-{    
-  wifi_reconnect(true);
-  mqtt_reconnect(5000);
-} 
-
-/** You can use this callback to test connectivity, but it only prints
- * messages -- you'll have to customize it for your purposes (which is
- * better done in your application -- see the examples)
- * */
-// void callback(char* topic, byte *payload, unsigned int length) 
-// {
-//     Serial.println(topic);
-//     Serial.print(':');  
-//     Serial.write(payload, length);
-//     Serial.println();
-// }
-
-// obsolete calls; best to use xyz_reconnect() directly
-void setup_wifi(void) {mqtt_reconnect();}
-bool reconnect(void) {return mqtt_reconnect();}

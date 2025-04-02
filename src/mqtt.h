@@ -9,16 +9,10 @@
 #endif
 
 #include <PubSubClient.h>
+#include <WiFiClientSecure.h>
 
 bool wifi_reconnect(bool forceReconnect = false);
-bool mqtt_reconnect(uint32_t timeout = 0);
+bool mqtt_reconnect(String* subscriptions, uint8_t subcount);
 
-//obsolete; just use xyz_reconnect methods; left here for legacy
-void setup_wifi(void);
-void setup_mqtt(void);
-bool reconnect(void);
-
-//void callback(char* topic, byte *payload, unsigned int length);
-
-extern WiFiClient wifiClient;
+extern WiFiClientSecure wifiClient;
 extern PubSubClient client;
