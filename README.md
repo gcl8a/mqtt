@@ -53,7 +53,7 @@ The `wifi_credentials.h` file can live wherever you want, so long as it can be f
 
 The examples demonstrate the workflow shown below. Call `sendMessage(topic, message)` from a Romi/Leonardo to send a message. The example code for the ESP32 will prepend the team name to the topic. **See the readme files in the example folders for additional chip-specific information.**
 
-The ESP32 example will subscribe to all messages that have the team number as the root topic and pass messages on to the Romi. It is up to the user to create a means of handling messages received.
+The ESP32 example will subscribe to all messages on the root topic and pass messages on to the Romi. It is up to the user to create a means of handling messages received. The figure below shows a `teamN` topic -- ignore that.
 
 If your Romi/Leonardo is running at 5V (the default), **you must use a level shifter to drop the voltage from the `TX` on the Romi to the `RX` on the ESP32.** See the readme's in the specific examples for more information.
 
